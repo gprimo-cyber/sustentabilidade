@@ -1,0 +1,80 @@
+:root {
+    --bg-transparente: rgba(15, 23, 42, 0.85);
+    --primary: #a3e635;
+    --danger: #ef4444;
+    --text: #f8fafc;
+}
+
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: #000;
+    font-family: 'Segoe UI', Roboto, sans-serif;
+}
+
+#canvas-3d {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+#ui-container {
+    position: relative;
+    z-index: 10;
+    pointer-events: none; /* Deixa o clique passar para o 3D se necessário */
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+header, .hud, #tela-fim {
+    pointer-events: auto; /* Reativa os cliques nos menus */
+    background: var(--bg-transparente);
+    border: 1px solid #334155;
+    padding: 15px 25px;
+    border-radius: 12px;
+    color: var(--text);
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    backdrop-filter: blur(4px);
+    margin-bottom: 15px;
+}
+
+header h1 { margin: 0; color: var(--primary); font-size: 1.8rem; }
+header p { margin: 5px 0 0 0; font-size: 0.85rem; color: #94a3b8; }
+
+.hud {
+    display: flex;
+    gap: 40px;
+}
+
+.status-item { display: flex; flex-direction: column; font-size: 0.85rem; color: #94a3b8; }
+.status-item strong { font-size: 1.4rem; color: #fff; }
+
+#tela-fim {
+    position: absolute;
+    top: 200px;
+    max-width: 350px;
+}
+
+.btn-principal {
+    background: var(--primary);
+    color: #0f172a;
+    border: none;
+    padding: 12px 24px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 15px;
+    width: 100%;
+}
+.btn-principal:hover { background: #84cc16; }
+.escondido { display: none !important; }
+.text-center { text-align: center; }
