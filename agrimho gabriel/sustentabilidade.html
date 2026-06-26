@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drone Eco-3D: Patrulha Agrícola</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+    <div id="ui-container">
+        <header>
+            <h1>🛸 Drone Eco-3D</h1>
+            <p>Use as teclas **WASD** para voar e **ESPAÇO** para tratar a plantação!</p>
+        </header>
+
+        <div class="hud">
+            <div class="status-item">
+                <span>Plantações Salvas:</span>
+                <strong id="txt-pontos">0</strong>
+            </div>
+            <div class="status-item">
+                <span>🔋 Bateria:</span>
+                <strong id="txt-bateria">100%</strong>
+            </div>
+        </div>
+
+        <div id="tela-fim" class="escondido text-center">
+            <div style="font-size: 3rem;">🪫</div>
+            <h2>Fim da Missão</h2>
+            <p id="fim-mensagem"></p>
+            <button id="btn-restart" class="btn-principal">Reiniciar Drone 🔄</button>
+        </div>
+    </div>
+
+    <div id="canvas-3d"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
