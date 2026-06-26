@@ -128,7 +128,6 @@ function init3D() {
     animate();
 }
 
-// Converte os inputs para minúsculo para evitar bugs com Caps Lock ativo
 function aoApertar(e) { teclado[e.key.toLowerCase()] = true; }
 function aoSoltar(e) { teclado[e.key.toLowerCase()] = false; }
 
@@ -303,7 +302,6 @@ function animate() {
     const velocidade = 0.28;
     let movendo = false;
     
-    // MUDANÇA: Mapeamento alterado para as teclas W, S, A, D
     if (teclado['w'] && drone.position.z > -TAMANHO_CAMPO/2) { drone.position.z -= velocidade; drone.rotation.x = -0.15; movendo = true; }
     if (teclado['s'] && drone.position.z < TAMANHO_CAMPO/2) { drone.position.z += velocidade; drone.rotation.x = 0.15; movendo = true; }
     if (teclado['a'] && drone.position.x > -TAMANHO_CAMPO/2) { drone.position.x -= velocidade; drone.rotation.z = 0.15; movendo = true; }
@@ -320,11 +318,12 @@ function animate() {
     camera.position.z = THREE.MathUtils.lerp(camera.position.z, drone.position.z + 13, 0.08);
     camera.lookAt(drone.position.x, drone.position.y - 1.5, drone.position.z);
 
-    const drenoPassivoFase = 0.05 + (nivel - 1) * 0.012;
+    const drenoPassivoFase = 0.05 + (nivel - 1) * 0.035;
     bateria -= drenoPassivoFase;
 
     if (teclado[' ']) {
-        bateria -= 0.35; 
+        const drenoSprayFase = 0.35 + (nivel - 1) * 0.08;
+        bateria -= drenoSprayFase; 
         checarTratamento();
         dispararSprayCura();
     }
@@ -348,6 +347,10 @@ function animate() {
             p.mesh.rotation.y = Math.sin(Date.now() * velocidadeTremor) * 0.06;
         }
     });
+
+    // Loops das partículas ativados para rodar a cada renderização
+    loopParticulasVoo();
+    loopParticulasCura();
 
     renderizador.render(cena, camera);
 }
@@ -431,7 +434,7 @@ function checarTratamento() {
                     nivel++; 
                     if(domNivel) domNivel.textContent = nivel;
 
-                    const bonusBateria = Math.max(15, 35 - (nivel * 2));
+                    const bonusBateria = Math.max(10, 35 - (nivel * 3));
                     bateria = Math.min(bateria + bonusBateria, 100); 
                     
                     gerarFazendaMilhoSoja(); 
@@ -441,12 +444,19 @@ function checarTratamento() {
     });
 }
 
+// MUDANÇA CRÍTICA: Estrutura da mensagem melhorada para injetar o Nível corretamente no Game Over
 function finalizarJogo() {
     jogoAtActive = false;
     if(domTelaFim) domTelaFim.classList.remove('escondido');
+    
+    // Injeta o texto estruturado com quebra de linha e destaque visual direto na mensagem de fim
     if(domMensagemFim) {
-        domMensagemFim.textContent = `Sabor: sustentabilidade na agricultura. Você chegou ao Nível ${nivel} e coletou ${pontos} sacas de alimentos saudáveis antes da pane de energia!`;
+        domMensagemFim.innerHTML = `<strong>PANE DE ENERGIA!</strong><br><br>Você defendeu a sustentabilidade agrícola até o <strong>Nível ${nivel}</strong> e colheu um total de <strong>${pontos} sacas</strong> de alimentos saudáveis!`;
     }
+    
+    // Suporte extra: Se você tiver um span separado com id="txt-nivel-fim" no HTML, ele também será atualizado
+    const domNivelFim = document.getElementById('txt-nivel-fim');
+    if(domNivelFim) domNivelFim.textContent = nivel;
 }
 
 function onWindowResize() {
